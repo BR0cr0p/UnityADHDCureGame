@@ -24,7 +24,7 @@ public class TapController : MonoBehaviour
         SetIdle();
         isWater = true;
 
-        flasher?.Activate();
+        //flasher?.Activate(); // 水流特效不闪烁，保持持续播放
         waterFX?.Play();
     }
 
