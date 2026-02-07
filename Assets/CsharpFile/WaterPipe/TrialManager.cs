@@ -25,6 +25,9 @@ public class TrialManager : MonoBehaviour
     public int hardTrials = 6;
     public float sandPenalty = 0.5f;
 
+    [Header("Flow Timing")]
+    public float flowDuration = 3.5f; // 出水持续时间（秒）
+
     [HideInInspector] public TapDifficulty currentDifficulty;
     private PipeHeadSensor pipeSensor;
 
@@ -40,6 +43,8 @@ public class TrialManager : MonoBehaviour
 
     public void StartLevel(TapDifficulty difficulty)
     {
+        StopCurrentGame(); // 防止残留
+
         currentDifficulty = difficulty;
         bucket.ResetWater();
 
@@ -66,7 +71,7 @@ public class TrialManager : MonoBehaviour
             pipeSensor.activeTap = tap;
             pipeSensor.ResetCapture();
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(flowDuration);
             tap.SetIdle();
             yield return new WaitForSeconds(easyInterval);
         }
@@ -146,7 +151,7 @@ public class TrialManager : MonoBehaviour
             }
 
             // ===== 4. 本轮存在 2 秒 =====
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(flowDuration);
 
             // ===== 5. 全部停止 =====
             foreach (var t in taps)
@@ -159,9 +164,6 @@ public class TrialManager : MonoBehaviour
         if (pipe != null) pipe.enableInput = false;
     }
 
-
-
-
     private IEnumerator ShowInstruction(string text, float duration)
     {
         if (instructionUI != null)
@@ -169,5 +171,26 @@ public class TrialManager : MonoBehaviour
             instructionUI.Show(text, duration, 0.3f);
             yield return new WaitForSeconds(duration + 0.6f);
         }
+    }
+
+    public void StopCurrentGame()
+    {
+        // 停掉所有协程（这是关键）
+        StopAllCoroutines();
+
+        // 关闭水管输入
+        PipeHeadController pipe = FindObjectOfType<PipeHeadController>();
+        if (pipe != null)
+            pipe.enableInput = false;
+
+        // 重置所有水龙头状态
+        foreach (var t in taps)
+            t.SetIdle();
+
+        // 重置传感器
+        if (pipeSensor != null)
+            pipeSensor.ResetCapture();
+
+        Debug.Log("Game forcibly stopped and cleaned.");
     }
 }

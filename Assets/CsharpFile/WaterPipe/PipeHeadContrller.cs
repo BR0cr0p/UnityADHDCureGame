@@ -3,7 +3,7 @@
 public class PipeHeadController : MonoBehaviour
 {
     public Transform movementPlane;   // 提供 Z 位置
-    public float smooth = 12f;
+    public float smooth = 5f;
     public Vector2 xLimit = new Vector2(-6f, 6f);
     public Vector2 yLimit = new Vector2(-4f, 4f);
 
@@ -15,6 +15,11 @@ public class PipeHeadController : MonoBehaviour
     void Start()
     {
         cam = Camera.main;
+        if (cam == null)
+        {
+            cam = FindObjectOfType<Camera>();
+        }
+
         if (cam == null || movementPlane == null)
         {
             Debug.LogError("Missing Camera or MovementPlane!");
@@ -36,11 +41,16 @@ public class PipeHeadController : MonoBehaviour
     void UpdateTargetPosition()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        Plane plane = new Plane(Vector3.forward, movementPlane.position);
+        Plane plane = new Plane(Vector3.forward, new Vector3(0, 0, movementPlane.position.z));
 
         if (plane.Raycast(ray, out float enter))
         {
             Vector3 hit = ray.GetPoint(enter);
+
+            // **加入灵敏度缩放**
+            float sensitivity = 0.5f; // 0.1~1.0 调整灵敏度，越小越慢
+            hit = Vector3.Lerp(transform.position, hit, sensitivity);
+
             hit.x = Mathf.Clamp(hit.x, xLimit.x, xLimit.y);
             hit.y = Mathf.Clamp(hit.y, yLimit.x, yLimit.y);
             hit.z = movementPlane.position.z;
@@ -52,4 +62,11 @@ public class PipeHeadController : MonoBehaviour
     {
         transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * smooth);
     }
+
+    public void EnableInput()
+    {
+        enableInput = true;
+        targetPos = transform.position; // 关键：同步当前位置
+    }
+
 }
