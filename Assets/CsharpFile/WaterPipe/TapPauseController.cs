@@ -60,6 +60,10 @@ public class TapPauseController : MonoBehaviour
         if (pausePanel != null)
             pausePanel.SetActive(false);
 
+        TrialManager trial = FindObjectOfType<TrialManager>();
+        if (trial != null)
+            trial.StopCurrentGame();
+
         TapMainMenuController menu = FindObjectOfType<TapMainMenuController>();
         if (menu != null)
             menu.ShowDifficultyPanel();

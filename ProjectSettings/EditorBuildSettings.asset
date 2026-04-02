@@ -5,22 +5,22 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/MainHub.unity
     guid: cc1c6423b5d099240b39cd778e2063f1
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Island_Schulte.unity
     guid: e1359009f40cca849919a97ed48ba236
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Island_Candle.unity
     guid: ff638fa80f2b58f48a699cf2c1142ae8
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Island_Fish.unity
     guid: 1a0b32f3853155e408348cbe493716f8
-  - enabled: 0
-    path: Assets/Scenes/Island_Pipe.unity
+  - enabled: 1
+    path: Assets/Scenes/Island_Pipe_Test.unity
     guid: 5637adf3e8fe5524ab7e5f13ba01f0ec
   - enabled: 1
-    path: Assets/Scenes/WaterTapTest.unity
+    path: Assets/Scenes/Island_WaterTap.unity
     guid: 68580a1f44547fa42a93e538683784d9
   m_configObjects: {}

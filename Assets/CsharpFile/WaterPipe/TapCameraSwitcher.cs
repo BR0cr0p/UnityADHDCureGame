@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TapCameraSwitcher : MonoBehaviour
 {
-    public Camera sceneCamera;
-    public Camera gameCamera;
+    public Camera sceneCamera;  // 编辑器/主菜单摄像头
+    public Camera gameCamera;   // 游戏摄像头
 
     void Start()
     {
@@ -14,13 +12,13 @@ public class TapCameraSwitcher : MonoBehaviour
 
     public void ShowSceneView()
     {
-        sceneCamera.gameObject.SetActive(true);
-        gameCamera.gameObject.SetActive(false);
+        if (sceneCamera != null) sceneCamera.gameObject.SetActive(true);
+        if (gameCamera != null) gameCamera.gameObject.SetActive(false);
     }
 
     public void SwitchToGameView()
     {
-        sceneCamera.gameObject.SetActive(false);
-        gameCamera.gameObject.SetActive(true);
+        if (sceneCamera != null) sceneCamera.gameObject.SetActive(false);
+        if (gameCamera != null) gameCamera.gameObject.SetActive(true);
     }
 }
